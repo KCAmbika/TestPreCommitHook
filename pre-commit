@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Get the current branch name
+branch_name=$(git symbolic-ref --short HEAD)
+
+# Check if the branch name is lowercase
+if [[ "$branch_name" != "${branch_name,,}" ]]; then
+    echo "Error: Branch name must be lowercase."
+    exit 1
+fi
