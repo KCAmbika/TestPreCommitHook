@@ -37,14 +37,11 @@ try {
 }
 catch [System.Exception] {
     $errorMessage = ($_.Exception.Message + " " + $error[0].InvocationInfo.PositionMessage)
-    Log("Fatal error occurred while running the script.")
-    Log("Error:" + $errorMessage)
+    Write-Output ("catch block")
+    # Log("Fatal error occurred while running the script.")
+    # Log("Error:" + $errorMessage)
     exit 1
 }
 finally {
     Write-Output ("Command completed")
-}
-
-function Log($logLine, $foreGroundColor = "White") {
-    Write-Host ("{0} - {1}" -f (get-date -f yyyyMMdd_HHmmss), $logLine) -ForegroundColor $foreGroundColor
 }
