@@ -6,21 +6,46 @@ pipeline {
         timestamps()
     }
     stages {
-        stage('Build') {
+        stage('PreCheck') {
+            agent { label 'NLYBSTQVP4VW61T' }
             steps {
-                // the algorithm script creates a file named report.txt
-                    script { 
-                    def psScriptPath = 'UpdateCerts.ps1'
-                // Execute the PowerShell script
-                powershell(returnStatus: true, script: "Invoke-Expression -Command .\\${psScriptPath}")
+                script {
+                    // Update the build id.
+                    println "MDT deployment started on machine ${TARGET_MACHINE} "
+                    currentBuild.displayName = "${TARGET_MACHINE}"
 
-                // this step archives the report
-                archiveArtifacts allowEmptyArchive: true,
-                    artifacts: '*.txt',
-                    fingerprint: true,
-                    onlyIfSuccessful: true
-                    }
+                    // Machine names shall always be in uppercase. Otherwise slave node cannot be identified by Jenkins.
+                    TARGET_MACHINE = TARGET_MACHINE.toUpperCase()
+                }
             }
         }
+        stage('Cert Update') {
+            agent { label 'AmbikaTest' }
+            steps {
+                script {   
+                        def psScriptPath = 'UpdateCerts.ps1'
+                        // Execute the PowerShell script
+                        powershell(returnStatus: true, script: "Invoke-Expression -Command .\\${psScriptPath}")
+                        // powershell script: "${UPDATE_CERT_SCRIPT_PATH}"
+
+                }
+            }
+        }
+        
     }
+    post {
+        failure {
+            println("FAILED")
+        }
+        success {
+        //    sendMail("SUCCEEDED","")
+            script {
+                println "MDT deployment completed successfully on ${TARGET_MACHINE} "
+            }
+        }
+        aborted {
+            println("ABORTED")
+        }
+    }
+
 }
