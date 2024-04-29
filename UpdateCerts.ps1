@@ -19,12 +19,12 @@ try {
     certutil.exe -generateSSTFromWU $sstFilePath
 
     # Install certificates from the SST file if sst was downloaded from internet
-    if (!Test-Path -Path $sstFilePath) {
-        Write-Output ("roots.sst downloaded successfully, Import cert started")
-        $sstStore = Get-ChildItem -Path $sstFilePath
-        $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
-    }
-    else {
+    #if (Test-Path -Path $sstFilePath) {
+    #    Write-Output ("roots.sst downloaded successfully, Import cert started")
+    #    $sstStore = Get-ChildItem -Path $sstFilePath
+    #    $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
+    #}
+    #elseif () {
         Write-Output ("Entering else block")
         Copy-Item -Path "\\INGBTCPIC6VWF69\PackageFetcherTestShare\roots.sst" -Destination $sstFilePath
         if (Test-Path -Path $sstFilePath) {
@@ -33,7 +33,7 @@ try {
             $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
             # Copy the SST file to your build server
         }
-    }
+    #}
 }
 catch [System.Exception] {
     $errorMessage = ($_.Exception.Message + " " + $error[0].InvocationInfo.PositionMessage)
