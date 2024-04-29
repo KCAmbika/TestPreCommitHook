@@ -26,7 +26,7 @@ try {
     #}
     #elseif () {
         Write-Output ("Entering else block")
-        Copy-Item -Path "\\INGBTCPIC6VWF69\PackageFetcherTestShare\roots.sst" -Destination $sstFilePath
+        Copy-Item -Path "\\NLYBSTQVP4VW61T\c$\Users\nlybstqvp4-sys46\Downloads\roots.sst" -Destination $sstFilePath
         if (Test-Path -Path $sstFilePath) {
             Write-Output ("roots.sst downloaded successfully, Import cert started")
             $sstStore = Get-ChildItem -Path $sstFilePath
