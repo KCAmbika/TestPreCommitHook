@@ -5,6 +5,9 @@ pipeline {
         timeout(time: 12, unit: 'HOURS')
         timestamps()
     }
+    parameters {
+        string(name: 'TARGET_MACHINE', description: 'Test machine on which MDT deployment shall begin', trim: true)
+    }
     stages {
         stage('PreCheck') {
             agent { label 'NLYBSTQVP4VW61T' }
