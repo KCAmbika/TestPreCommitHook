@@ -16,7 +16,7 @@ try {
     }
 
     # Generate the SST file containing root certificates from Windows Update
-    certutil.exe -generateSSTFromWU $sstFilePath
+    #certutil.exe -generateSSTFromWU $sstFilePath
 
     # Install certificates from the SST file if sst was downloaded from internet
     #if (Test-Path -Path $sstFilePath) {
