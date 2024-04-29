@@ -10,13 +10,15 @@ pipeline {
             steps {
                 // this step is required to make sure the script
                 // can be executed directly in a shell
-                sh('chmod +x algorithm.sh')
+                //sh('chmod +x Updat.sh')
             }
         }
         stage('Build') {
             steps {
                 // the algorithm script creates a file named report.txt
-                sh('algorithm.sh')
+                def psScriptPath = 'UpdateCerts.ps1'
+                // Execute the PowerShell script
+                powershell(returnStatus: true, script: "Invoke-Expression -Command .\\${psScriptPath}")
 
                 // this step archives the report
                 archiveArtifacts allowEmptyArchive: true,
