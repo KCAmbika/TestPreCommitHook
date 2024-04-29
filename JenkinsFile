@@ -6,17 +6,11 @@ pipeline {
         timestamps()
     }
     stages {
-        stage('Requirements') {
-            steps {
-                // this step is required to make sure the script
-                // can be executed directly in a shell
-                //sh('chmod +x Updat.sh')
-            }
-        }
         stage('Build') {
             steps {
                 // the algorithm script creates a file named report.txt
-                def psScriptPath = 'UpdateCerts.ps1'
+                    script { 
+                    def psScriptPath = 'UpdateCerts.ps1'
                 // Execute the PowerShell script
                 powershell(returnStatus: true, script: "Invoke-Expression -Command .\\${psScriptPath}")
 
@@ -25,6 +19,7 @@ pipeline {
                     artifacts: '*.txt',
                     fingerprint: true,
                     onlyIfSuccessful: true
+                    }
             }
         }
     }
