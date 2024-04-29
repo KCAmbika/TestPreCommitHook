@@ -19,13 +19,19 @@ try {
     certutil.exe -generateSSTFromWU $sstFilePath
 
     # Install certificates from the SST file if sst was downloaded from internet
-    if (Test-Path -Path $sstFilePath) {
+    if (!Test-Path -Path $sstFilePath) {
         Write-Output ("roots.sst downloaded successfully, Import cert started")
         $sstStore = Get-ChildItem -Path $sstFilePath
         $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
     }
     else {
-        # Copy the SST file to your build server
+        Copy-Item -Path "\\INGBTCPIC6VWF69\PackageFetcherTestShare\roots.sst" -Destination $sstFilePath
+        if (Test-Path -Path $sstFilePath) {
+            Write-Output ("roots.sst downloaded successfully, Import cert started")
+            $sstStore = Get-ChildItem -Path $sstFilePath
+            $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
+            # Copy the SST file to your build server
+        }
     }
 }
 catch [System.Exception] {
@@ -38,6 +44,6 @@ finally {
     Write-Output ("Command completed")
 }
 
-function Log($logLine, $foreGroundColor="White") {
+function Log($logLine, $foreGroundColor = "White") {
     Write-Host ("{0} - {1}" -f (get-date -f yyyyMMdd_HHmmss), $logLine) -ForegroundColor $foreGroundColor
 }
