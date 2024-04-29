@@ -25,6 +25,7 @@ try {
         $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
     }
     else {
+        Write-Output ("Entering else block")
         Copy-Item -Path "\\INGBTCPIC6VWF69\PackageFetcherTestShare\roots.sst" -Destination $sstFilePath
         if (Test-Path -Path $sstFilePath) {
             Write-Output ("roots.sst downloaded successfully, Import cert started")
