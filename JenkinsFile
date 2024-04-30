@@ -17,7 +17,8 @@ pipeline {
                     println "MDT deployment started on machine ${TARGET_MACHINE} "
                     currentBuild.displayName = "${TARGET_MACHINE}"
                     println "workspace path is  at: ${env.WORKSPACE}"
-
+                    def workspacePath = "${env.WORKSPACE}\\Output\\roots.sst"
+                    println "workspace path is  at: ${workspacePath}"
                     bat 'certutil.exe -generateSSTFromWU %env.WORKSPACE%\Output\roots.sst'
                     
 
