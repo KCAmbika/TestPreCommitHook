@@ -24,7 +24,7 @@ pipeline {
 
                     // Machine names shall always be in uppercase. Otherwise slave node cannot be identified by Jenkins.
                     TARGET_MACHINE = TARGET_MACHINE.toUpperCase()
-                    stash includes: "${workspacePath}\\roots.sst", name: 'sstFile'
+                    stash includes: "Output/roots.sst", name: 'sstFile'
                 }
             }
         }
