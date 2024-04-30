@@ -16,6 +16,7 @@ pipeline {
                     // Update the build id.
                     println "MDT deployment started on machine ${TARGET_MACHINE} "
                     currentBuild.displayName = "${TARGET_MACHINE}"
+                    println "workspace path is  at: ${env.WORKSPACE}"
 
                     // Machine names shall always be in uppercase. Otherwise slave node cannot be identified by Jenkins.
                     TARGET_MACHINE = TARGET_MACHINE.toUpperCase()
