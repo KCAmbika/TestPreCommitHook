@@ -19,6 +19,27 @@ pipeline {
 
                     // Machine names shall always be in uppercase. Otherwise slave node cannot be identified by Jenkins.
                     TARGET_MACHINE = TARGET_MACHINE.toUpperCase()
+                    stash includes: 'C:\\PS\\roots.sst', name: 'sstFile'
+                }
+            }
+        }
+
+        stage('Unstash and Verify on TestServer') {
+            agent {
+                label 'AmbikaTest'
+            }
+            steps {
+                // Unstash the roots.sst file
+                unstash 'sstFile'
+
+                // Check if the file exists in the proper location
+                script {
+                    def sstFilePath = "${env.WORKSPACE}\\roots.sst"
+                    if (fileExists(sstFilePath)) {
+                        echo "roots.sst exists at: ${sstFilePath}"
+                    } else {
+                        error "roots.sst not found!"
+                    }
                 }
             }
         }
