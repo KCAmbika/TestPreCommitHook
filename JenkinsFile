@@ -19,7 +19,7 @@ pipeline {
                     println "workspace path is  at: ${env.WORKSPACE}"
                     def workspacePath = "${env.WORKSPACE}\\Output\\roots.sst"
                     println "workspace path is  at: ${workspacePath}"
-                    bat 'certutil.exe -generateSSTFromWU "%workspacePath%"'
+                    bat 'certutil.exe -generateSSTFromWU %workspacePath%'
                     
 
                     // Machine names shall always be in uppercase. Otherwise slave node cannot be identified by Jenkins.
