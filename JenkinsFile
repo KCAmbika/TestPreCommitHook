@@ -18,12 +18,12 @@ pipeline {
                     currentBuild.displayName = "${TARGET_MACHINE}"
                     println "workspace path is  at: ${env.WORKSPACE}"
 
-                    bat 'certutil.exe -generateSSTFromWU "roots.sst"'
+                    bat 'certutil.exe -generateSSTFromWU ${env.WORKSPACE}\\Output\\roots.sst'
                     
 
                     // Machine names shall always be in uppercase. Otherwise slave node cannot be identified by Jenkins.
                     TARGET_MACHINE = TARGET_MACHINE.toUpperCase()
-                    stash includes: "${env.WORKSPACE}\\roots.sst", name: 'sstFile', useDefaultExcludes: true
+                    stash includes: "${env.WORKSPACE}\\roots.sst", name: 'sstFile'
                 }
             }
         }
