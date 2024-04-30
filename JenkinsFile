@@ -39,8 +39,10 @@ pipeline {
 
                 // Check if the file exists in the proper location
                 script {
+                    def workspacePath = "${env.WORKSPACE}\\Output\\roots.sst"
+                    println "workspace path is  at: ${workspacePath}"
                     def sstFilePath = "${env.WORKSPACE}\\roots.sst"
-                    if (fileExists(sstFilePath)) {
+                    if (fileExists(workspacePath)) {
                         echo "roots.sst exists at: ${sstFilePath}"
                     } else {
                         error "roots.sst not found!"
