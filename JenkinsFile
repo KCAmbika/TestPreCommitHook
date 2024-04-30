@@ -45,7 +45,7 @@ pipeline {
                     if (fileExists(workspacePath)) {
                         echo "roots.sst exists at: ${sstFilePath}"
                         powershell '''
-                        $sstStore = Get-ChildItem -Path $sstFilePath
+                        $sstStore = Get-ChildItem -Path $workspacePath
                         $sstStore | Import-Certificate -CertStoreLocation Cert:\\LocalMachine\\Root '''
                     } else {
                         error "roots.sst not found!"
