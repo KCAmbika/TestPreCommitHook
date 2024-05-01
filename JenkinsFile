@@ -40,12 +40,9 @@ pipeline {
                 // Check if the file exists in the proper location
                 script {
                     // Get the script directory
-                    function Get-ScriptDirectory {
-                        Split-Path $script:MyInvocation.MyCommand.Path
-                    }
-
+                    
                     // Construct the full path
-                    $workspacePath = Join-Path (Get-ScriptDirectory) 'Output\roots.sst'
+                    $workspacePath = Join-Path (${env.WORKSPACE}) 'Output\roots.sst'
 
                     // Verify file existence
                     if (Test-Path -Path $workspacePath) {
