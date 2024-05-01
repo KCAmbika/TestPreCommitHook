@@ -1,7 +1,12 @@
+param (
+    [string]$sstFilePath
+)
+
+
 try {
     # Specify the path where you want to create the directory and SST file
-    $certificateDirectoryPath = "C:\PS"
-    $sstFilePath = "$directoryPath\roots.sst"
+    $certificateDirectoryPath = $sstFilePath
+    $certFilePath = "$certificateDirectoryPath\roots.sst"
 
     # Check if the directory exists; if not, create it
     if (-not (Test-Path -PathType Container $certificateDirectoryPath)) {
@@ -10,30 +15,15 @@ try {
     }
 
     # Delete the existing SST file if it exists
-    if (Test-Path -Path $sstFilePath) {
+    if (Test-Path -Path $certFilePath) {
         Write-Output ("Old certs exist, deleting the certs")
-        Remove-Item -Path $sstFilePath
+        Remove-Item -Path $certFilePath
     }
 
     # Generate the SST file containing root certificates from Windows Update
-    #certutil.exe -generateSSTFromWU $sstFilePath
+    certutil.exe -generateSSTFromWU $certFilePath
 
-    # Install certificates from the SST file if sst was downloaded from internet
-    #if (Test-Path -Path $sstFilePath) {
-    #    Write-Output ("roots.sst downloaded successfully, Import cert started")
-    #    $sstStore = Get-ChildItem -Path $sstFilePath
-    #    $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
-    #}
-    #elseif () {
-        Write-Output ("Entering else block")
-        Copy-Item -Path "\\\\NLYBSTQVP4VW61T\\c$\\Users\\nlybstqvp4-sys46\\Downloads\\roots.sst" -Destination $sstFilePath
-        if (Test-Path -Path $sstFilePath) {
-            Write-Output ("roots.sst downloaded successfully, Import cert started")
-            $sstStore = Get-ChildItem -Path $sstFilePath
-            $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
-            # Copy the SST file to your build server
-        }
-    #}
+    
 }
 catch [System.Exception] {
     $errorMessage = ($_.Exception.Message + " " + $error[0].InvocationInfo.PositionMessage)
