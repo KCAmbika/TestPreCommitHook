@@ -40,7 +40,7 @@ pipeline {
         }
 
         stage('Unstash and Verify on TestServer') {
-            agent any
+            agent { label 'NLYBSTQVP4VW61T' }
             steps {
                 // Unstash the roots.sst file
                 unstash PIPE_STASH_ID
@@ -50,7 +50,7 @@ pipeline {
 		    def testNodes = nodesByLabel('AmbikaTest')
 		    echo "Test Nodes:"
                     testNodes.each { node ->
-                        echo "- ${node.name}"
+                        echo "- ${node.getNodeName()}"
                     }
 		
                     // Iterate over the nodes
