@@ -40,21 +40,30 @@ pipeline {
         }
 
         stage('Unstash and Verify on TestServer') {
-            agent {
-                label 'AmbikaTest'
-            }
+            agent any
             steps {
                 // Unstash the roots.sst file
                 unstash PIPE_STASH_ID
 
                 // Check if the file exists in the proper location
                 script {
+		    def testNodes = nodesByLabel('AmbikaTest')
+		    echo "Test Nodes:"
+                    testNodes.each { node ->
+                        echo "- ${node.name}"
+                    }
+		
+                    // Iterate over the nodes
+                    //for (node in testNodes) {
+                        // Execute your PowerShell script on each node
+                      //  bat "powershell.exe -File path/to/your/script.ps1"
+                    //}
                     // Get the script directory
-                    def psScriptPath = 'Test.ps1'
-                    def workspacePath = "${env.PIPE_CERT_PATH}\\roots.sst"
+                    //def psScriptPath = 'Test.ps1'
+                    //def workspacePath = "${env.PIPE_CERT_PATH}\\roots.sst"
                     // Execute the PowerShell script
 
-                    powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$workspacePath'\"")
+                    //powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$workspacePath'\"")
                     // Construct the full path
                     
                 }
