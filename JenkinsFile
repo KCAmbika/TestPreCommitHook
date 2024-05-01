@@ -8,23 +8,38 @@ pipeline {
     parameters {
         string(name: 'TARGET_MACHINE', description: 'Test machine on which MDT deployment shall begin', trim: true)
     }
+	environment {
+                
+        // Default build server for TICS build jobs. Do not modify.
+        PIPE_BUILD_SERVER_LABEL ="ticsbuildserver"
+		PIPE_CERT_PATH = "C:\\PS"
+		PIPE_STASH_ID = "Certificates"
+
+        
+    }
+    
     stages {
-        stage('PreCheck') {
+        stage('Cert Update from WU') {
             agent { label 'NLYBSTQVP4VW61T' }
             steps {
                 script {
+					// define where certs needs to downloaded
+					
                     // Update the build id.
                     println "MDT deployment started on machine ${TARGET_MACHINE} "
                     currentBuild.displayName = "${TARGET_MACHINE}"
                     println "workspace path is  at: ${env.WORKSPACE}"
-                    def workspacePath = "${env.WORKSPACE}\\Output\\roots.sst"
+                    def workspacePath = "${env.PIPE_CERT_PATH}\\roots.sst"
                     println "workspace path is  at: ${workspacePath}"
-                    bat 'certutil.exe -generateSSTFromWU "%workspacePath%" '
+                    def psScriptPath = 'UpdateCerts.ps1'
                     
+					powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$workspacePath'\"")
+                    // Construct the full path
 
                     // Machine names shall always be in uppercase. Otherwise slave node cannot be identified by Jenkins.
                     TARGET_MACHINE = TARGET_MACHINE.toUpperCase()
-                    stash includes: "Output/roots.sst", name: 'sstFile'
+                    // stash includes: "Output/roots.sst", name: 'sstFile'
+					stash name: PIPE_STASH_ID, includes: "${PIPE_CERT_PATH}\\**", useDefaultExcludes: true
                 }
             }
         }
