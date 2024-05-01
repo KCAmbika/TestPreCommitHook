@@ -11,7 +11,7 @@ pipeline {
     environment {
                 
         // Default build server for TICS build jobs. Do not modify.
-        PIPE_CERT_PATH = "C:\\PS"
+        PIPE_CERT_PATH = "Output\\Stash"
         PIPE_STASH_ID = "Certificates"
 
         
@@ -22,11 +22,7 @@ pipeline {
             agent { label 'NLYBSTQVP4VW61T' }
             steps {
                 script {
-					// define where certs needs to downloaded
-					
-                    // Update the build id.
-                    println "MDT deployment started on machine ${TARGET_MACHINE} "
-                    currentBuild.displayName = "${TARGET_MACHINE}"
+		    // define where certs needs to downloaded
                     println "workspace path is  at: ${env.WORKSPACE}"
                     def workspacePath = "${env.PIPE_CERT_PATH}\\roots.sst"
                     println "workspace path is  at: ${workspacePath}"
