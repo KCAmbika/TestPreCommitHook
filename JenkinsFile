@@ -8,12 +8,11 @@ pipeline {
     parameters {
         string(name: 'TARGET_MACHINE', description: 'Test machine on which MDT deployment shall begin', trim: true)
     }
-	environment {
+    environment {
                 
         // Default build server for TICS build jobs. Do not modify.
-        PIPE_BUILD_SERVER_LABEL ="ticsbuildserver"
-		PIPE_CERT_PATH = "C:\\PS"
-		PIPE_STASH_ID = "Certificates"
+        PIPE_CERT_PATH = "C:\\PS"
+        PIPE_STASH_ID = "Certificates"
 
         
     }
