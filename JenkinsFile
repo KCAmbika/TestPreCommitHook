@@ -30,29 +30,37 @@ pipeline {
         }
 
         stage('Unstash and Verify on TestServer') {
-            agent {
-                label 'AmbikaTest'
-            }
-            steps {
-                // Unstash the roots.sst file
-                unstash 'sstFile'
+    agent {
+        label 'AmbikaTest'
+    }
+    steps {
+        // Unstash the roots.sst file
+        unstash 'sstFile'
 
-                // Check if the file exists in the proper location
-                script {
-                    def workspacePath = "${env.WORKSPACE}\\Output\\roots.sst"
-                    println "workspace path is  at: ${workspacePath}"
-                    def sstFilePath = "${env.WORKSPACE}\\roots.sst"
-                    if (fileExists(workspacePath)) {
-                        echo "roots.sst exists at: ${sstFilePath}"
-                        powershell {
-                        $sstStore = Get-ChildItem -Path $workspacePath
-                        $sstStore | Import-Certificate -CertStoreLocation Cert:\\LocalMachine\\Root }
-                    } else {
-                        error "roots.sst not found!"
-                    }
+        // Check if the file exists in the proper location
+        script {
+            # Get the script directory
+            function Get-ScriptDirectory {
+                Split-Path $script:MyInvocation.MyCommand.Path
+            }
+
+            # Construct the full path
+            $workspacePath = Join-Path (Get-ScriptDirectory) 'Output\roots.sst'
+
+            # Verify file existence
+            if (Test-Path -Path $workspacePath) {
+                echo "roots.sst exists at: $workspacePath"
+                powershell {
+                    $sstStore = Get-ChildItem -Path $workspacePath
+                    $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
                 }
+            } else {
+                error "roots.sst not found!"
             }
         }
+    }
+}
+
         stage('Cert Update') {
             agent { label 'AmbikaTest' }
             steps {
