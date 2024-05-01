@@ -15,10 +15,10 @@ try {
     }
 
     # Delete the existing SST file if it exists
-    if (Test-Path -Path $certFilePath) {
-        Write-Output ("Old certs exist, deleting the certs")
-        Remove-Item -Path $certFilePath
-    }
+    #if (Test-Path -Path $certFilePath) {
+    #    Write-Output ("Old certs exist, deleting the certs")
+    #    Remove-Item -Path $certFilePath
+    #}
 
     # Generate the SST file containing root certificates from Windows Update
     certutil.exe -generateSSTFromWU $certFilePath
