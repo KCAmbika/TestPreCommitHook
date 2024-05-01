@@ -32,7 +32,7 @@ pipeline {
                     println "workspace path is  at: ${workspacePath}"
                     def psScriptPath = 'UpdateCerts.ps1'
                     
-					powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$workspacePath'\"")
+					powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$env.PIPE_CERT_PATH'\"")
                     // Construct the full path
 
                     // Machine names shall always be in uppercase. Otherwise slave node cannot be identified by Jenkins.
