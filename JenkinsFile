@@ -50,14 +50,19 @@ pipeline {
 		    def testNodes = nodesByLabel('AmbikaTest')
 		    echo "Test Nodes:"
                     testNodes.each { node ->
-                        echo "- ${node.getNodeName()}"
+                        echo "- ${node}"
                     }
 		
                     // Iterate over the nodes
-                    //for (node in testNodes) {
+                    for (node in testNodes) {
                         // Execute your PowerShell script on each node
-                      //  bat "powershell.exe -File path/to/your/script.ps1"
-                    //}
+                        def psScriptPath = 'Test.ps1'
+                    def workspacePath = "${env.PIPE_CERT_PATH}\\roots.sst"
+                    // Execute the PowerShell script
+
+                    powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$workspacePath'\"")
+                    // Construct the full path
+                    }
                     // Get the script directory
                     //def psScriptPath = 'Test.ps1'
                     //def workspacePath = "${env.PIPE_CERT_PATH}\\roots.sst"
