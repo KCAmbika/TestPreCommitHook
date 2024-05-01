@@ -44,9 +44,9 @@ pipeline {
                     def sstFilePath = "${env.WORKSPACE}\\roots.sst"
                     if (fileExists(workspacePath)) {
                         echo "roots.sst exists at: ${sstFilePath}"
-                        powershell '''
+                        powershell {
                         $sstStore = Get-ChildItem -Path $workspacePath
-                        $sstStore | Import-Certificate -CertStoreLocation Cert:\\LocalMachine\\Root '''
+                        $sstStore | Import-Certificate -CertStoreLocation Cert:\\LocalMachine\\Root }
                     } else {
                         error "roots.sst not found!"
                     }
