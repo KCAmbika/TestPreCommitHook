@@ -12,6 +12,7 @@ try {
     else{
         Write-Output ("roots.sst didn't select")
     }
+}
 finally {
     Write-Output ("Command completed")
 }
