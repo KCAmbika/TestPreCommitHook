@@ -30,45 +30,46 @@ pipeline {
         }
 
         stage('Unstash and Verify on TestServer') {
-    agent {
-        label 'AmbikaTest'
-    }
-    steps {
-        // Unstash the roots.sst file
-        unstash 'sstFile'
-
-        // Check if the file exists in the proper location
-        script {
-            # Get the script directory
-            function Get-ScriptDirectory {
-                Split-Path $script:MyInvocation.MyCommand.Path
+            agent {
+                label 'AmbikaTest'
             }
+            steps {
+                // Unstash the roots.sst file
+                unstash 'sstFile'
 
-            # Construct the full path
-            $workspacePath = Join-Path (Get-ScriptDirectory) 'Output\roots.sst'
+                // Check if the file exists in the proper location
+                script {
+                    # Get the script directory
+                    function Get-ScriptDirectory {
+                        Split-Path $script:MyInvocation.MyCommand.Path
+                    }
 
-            # Verify file existence
-            if (Test-Path -Path $workspacePath) {
-                echo "roots.sst exists at: $workspacePath"
-                powershell {
-                    $sstStore = Get-ChildItem -Path $workspacePath
-                    $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
+                    # Construct the full path
+                    $workspacePath = Join-Path (Get-ScriptDirectory) 'Output\roots.sst'
+
+                    # Verify file existence
+                    if (Test-Path -Path $workspacePath) {
+                        echo "roots.sst exists at: $workspacePath"
+                        powershell {
+                            $sstStore = Get-ChildItem -Path $workspacePath
+                            $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
+                        }
+                    }
+                    else {
+                        error "roots.sst not found!"
+                    }
                 }
-            } else {
-                error "roots.sst not found!"
             }
         }
-    }
-}
 
         stage('Cert Update') {
             agent { label 'AmbikaTest' }
             steps {
                 script {   
-                        def psScriptPath = 'UpdateCerts.ps1'
-                        // Execute the PowerShell script
-                        powershell(returnStatus: true, script: "Invoke-Expression -Command .\\${psScriptPath}")
-                        // powershell script: "${UPDATE_CERT_SCRIPT_PATH}"
+                    def psScriptPath = 'UpdateCerts.ps1'
+                    // Execute the PowerShell script
+                    powershell(returnStatus: true, script: "Invoke-Expression -Command .\\${psScriptPath}")
+                    // powershell script: "${UPDATE_CERT_SCRIPT_PATH}"
 
                 }
             }
@@ -80,7 +81,7 @@ pipeline {
             println("FAILED")
         }
         success {
-        //    sendMail("SUCCEEDED","")
+            //    sendMail("SUCCEEDED", "")
             script {
                 println "MDT deployment completed successfully on ${TARGET_MACHINE} "
             }
@@ -89,5 +90,4 @@ pipeline {
             println("ABORTED")
         }
     }
-
 }
