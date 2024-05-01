@@ -49,16 +49,7 @@ pipeline {
                     // $workspacePath = Join-Path (${env.WORKSPACE}) 'Output\roots.sst'
 
                     // Verify file existence
-                    if (Test-Path -Path $workspacePath) {
-                        echo "roots.sst exists at: $workspacePath"
-                        powershell {
-                            $sstStore = Get-ChildItem -Path $workspacePath
-                            $sstStore | Import-Certificate -CertStoreLocation Cert:\LocalMachine\Root
-                        }
-                    }
-                    else {
-                        error "roots.sst not found!"
-                    }
+                    
                 }
             }
         }
