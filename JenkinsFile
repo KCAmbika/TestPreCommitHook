@@ -43,6 +43,8 @@ pipeline {
                     def psScriptPath = 'Test.ps1'
                     def workspacePath = "${env.WORKSPACE}\\Output\\roots.sst"
                     // Execute the PowerShell script
+
+                    powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$sstFilePath'\"")
                     powershell(returnStatus: true, script: "Invoke-Expression -Command .\\${psScriptPath} -sstFilePath `"$sstFilePath`"")
 
                     powershell(returnStatus: true, script: "Invoke-Expression -Command .\\${psScriptPath} '$workspacePath'")
