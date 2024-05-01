@@ -45,7 +45,7 @@ pipeline {
             }
             steps {
                 // Unstash the roots.sst file
-                unstash $PIPE_STASH_ID
+                unstash PIPE_STASH_ID
 
                 // Check if the file exists in the proper location
                 script {
