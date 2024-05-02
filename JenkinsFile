@@ -56,7 +56,7 @@ pipeline {
                     // Iterate over the nodes
                     for (def nodes in testNodes) {
 			node(nodes) {
-                            echo "Hello from ${nodeName}"
+                            echo "Hello from ${nodes}"
                             // Other tasks specific to this node
                         }
                         // Execute your PowerShell script on each node
