@@ -60,7 +60,7 @@ pipeline {
                     def workspacePath = "${env.PIPE_CERT_PATH}\\roots.sst"
                     // Execute the PowerShell script
 
-                    powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$workspacePath'\"")
+                    powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$workspacePath'\"" -ExecutionPolicy Bypass)
                     // Construct the full path
                     }
                     // Get the script directory
