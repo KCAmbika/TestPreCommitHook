@@ -57,6 +57,13 @@ pipeline {
                     for (def nodes in testNodes) {
 			node(nodes) {
                             echo "Hello from ${nodes}"
+			    // Execute your PowerShell script on each node
+                        def psScriptPath = 'Test.ps1'
+                    def workspacePath = "${env.PIPE_CERT_PATH}\\roots.sst"
+                    // Execute the PowerShell script
+
+                    powershell(returnStatus: true, script: "Invoke-Expression -Command \".\\${psScriptPath} -sstFilePath '$workspacePath'\"")
+                    
                             // Other tasks specific to this node
                         }
                         // Execute your PowerShell script on each node
