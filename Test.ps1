@@ -1,7 +1,7 @@
 param (
     [string]$sstFilePath
 )
-
+Set-ExecutionPolicy Bypass -Scope Process -Force
 try {
     Write-Host "SstFilePath: $sstFilePath"
     if (Test-Path -Path $sstFilePath) {
